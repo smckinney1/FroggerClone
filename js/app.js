@@ -9,13 +9,14 @@ const ENEMY_TOP_ROW_OFFSET = 132;
 const ENEMY_ROW_HEIGHT = 82;
 const ENEMY_NUMBER_OF_ROWS = 3;
 
+// Player constants
+const PLAYER_STARTING_X_POSITION = 215;
+const PLAYER_STARTING_Y_POSITION = 446;
+const PLAYER_ROW_WIDTH = 101;
+const PLAYER_ROW_HEIGHT = 82;
+
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug-cropped.png';
 
     //Starting locations
@@ -62,20 +63,36 @@ Enemy.prototype.setMoveSpeed = function() {
 // a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-princess-girl-cropped.png';
-
-    //Middle column, bottom row
-    //Starting position for player will always be the same
-    this.x = 215;
-    this.y = 446;
+    this.x = PLAYER_STARTING_X_POSITION;
+    this.y = PLAYER_STARTING_Y_POSITION;
 };
 
 Player.prototype.update = function() {
-    //console.log('player update');
-}
+    
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
+
+Player.prototype.handleInput = function(e) {
+    //TODO: Ensure player can't move off screen
+    switch(e) {
+        case 'left':
+            player.x -= PLAYER_ROW_WIDTH;
+            break;
+        case 'right':
+            player.x += PLAYER_ROW_WIDTH;
+            break;
+        case 'up':
+            player.y -= PLAYER_ROW_HEIGHT;
+            break;
+        case 'down':
+            player.y += PLAYER_ROW_HEIGHT;
+            break;
+    }
+    console.log('x: ', player.x, 'y: ', player.y);
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
