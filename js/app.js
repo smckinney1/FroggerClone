@@ -1,3 +1,14 @@
+//TODO (NOTE TO SELF):
+////Centered "x" locations for enemy: 0, 100, 200, 300, 400
+////Centered "y" locations for enemy: 132, 214, 296 (***other rows not valid starting positions for enemy***)
+////Centered "x" locations for player: 13, 114, 215, 316, 417
+////Centered "y" locations for player: 35, 118, 200, 282, 364, 446
+
+// Enemy constants allow us to expand game in future, if needed
+const ENEMY_TOP_ROW_OFFSET = 132;
+const ENEMY_ROW_HEIGHT = 82;
+const ENEMY_NUMBER_OF_ROWS = 3;
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -9,9 +20,9 @@ var Enemy = function() {
 
     //Starting locations
     //this.x = this.setXLocation();
-    //this.y = this.setYLocation();
     this.x = 0;
-    this.y = 460;
+    this.y = this.setYLocation();
+
     this.setMoveSpeed();
 };
 
@@ -21,6 +32,8 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+   // this.x = this.x * 
 };
 
 // Draw the enemy on the screen, required method for game
@@ -30,12 +43,13 @@ Enemy.prototype.render = function() {
 
 // Set enemy starting X position
 Enemy.prototype.setXLocation = function() {
-
+    //We want "x" to start off screen
 };
 
-// Set enemy starting Y position
+// Set enemy starting Y position according to number of enemy rows defined in constants
 Enemy.prototype.setYLocation = function() {
-
+    var rowIndex = Math.floor(Math.random() * ENEMY_NUMBER_OF_ROWS);
+    return ENEMY_TOP_ROW_OFFSET + (ENEMY_ROW_HEIGHT * rowIndex);
 };
 
 // Set enemy move speed
@@ -49,7 +63,8 @@ Enemy.prototype.setMoveSpeed = function() {
 var Player = function() {
     this.sprite = 'images/char-princess-girl-cropped.png';
 
-    //TODO: set this to be middle of screen
+    //Middle column, bottom row
+    //Starting position for player will always be the same
     this.x = 215;
     this.y = 446;
 };
