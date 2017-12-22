@@ -1,3 +1,9 @@
+/*Credit for background image by HDWallSource.com: https://hdwallsource.com/green-background-21868.html*/
+
 body {
     text-align: center;
+    /*background: #bbeca4;*/
+    background: 
+    	url('../images/background.jpg')
+    	#bbeca4;
 }
