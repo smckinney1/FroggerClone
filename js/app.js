@@ -1,61 +1,32 @@
-//TODO (NOTE TO SELF):
-////Centered "x" locations for enemy: 0, 100, 200, 300, 400
-////Centered "y" locations for enemy: 132, 214, 296 (***other rows not valid starting positions for enemy***)
-////Centered "x" locations for player: 13, 114, 215, 316, 417
-////Centered "y" locations for player: 35, 118, 200, 282, 364, 446
-
-// Canvas constants
-const TILE_WIDTH = 101;
-const TILE_HEIGHT = 82;
-const COL_COUNT = 5;
-const ROW_COUNT = 6;
-
-// Topmost valid value for Y
-const Y_OFFSET = -32;
-
-// Topmost valid value for X
-const X_OFFSET = 2;
-
-// Enemy constants allow us to expand game in future, if needed
-// TOP_ROW_OFFSET prevents enemy from rendering in the water
-const ENEMY_TOP_ROW_OFFSET = 50;
-const ENEMY_NUMBER_OF_ROWS = 3;
-
-// Player constants
-// Last row, middle column
-const PLAYER_STARTING_ROW_INDEX = ROW_COUNT - 1;
-const PLAYER_STARTING_COL_INDEX = 2;
-
 // Enemies our player must avoid
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
-
-    //Starting locations
-    //this.x = this.setXLocation();
-    this.x = 0;
-    this.y = this.setYLocation();
-
-    this.setMoveSpeed();
+    this.initialize();
 };
+
+Enemy.prototype.initialize = function() {
+    this.x = OFFSCREEN_X_LOCATION;
+    this.y = this.setYLocation();
+    this.moveSpeed = this.setMoveSpeed();
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
+    // Multiply any movement by the dt parameter,
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x = this.x + (this.moveSpeed * dt);
 
-   // this.x = this.x * 
+    // Enemy is generated again when it goes off screen
+    if (this.x > TILE_WIDTH * COL_COUNT) {
+        this.initialize();
+    }
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-// Set enemy starting X position
-Enemy.prototype.setXLocation = function() {
-    //We want "x" to start off screen
 };
 
 // Set enemy starting Y position according to number of enemy rows defined in constants
@@ -65,11 +36,11 @@ Enemy.prototype.setYLocation = function() {
 };
 
 // Set enemy move speed
+// Speed will be either 100 (slow), 200 (medium), or 300 (fast)
 Enemy.prototype.setMoveSpeed = function() {
-
+    return (Math.floor(Math.random() * 3) + 1) * 100;
 };
 
-// Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
@@ -79,7 +50,7 @@ var Player = function() {
 };
 
 Player.prototype.update = function() {
-    
+    // TODO: Win conditions
 };
 
 Player.prototype.render = function() {
@@ -115,7 +86,6 @@ Player.prototype.handleInput = function(keyPressed) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
 var allEnemies = [];
 var player = new Player();
 allEnemies.push(new Enemy());
