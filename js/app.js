@@ -7,7 +7,13 @@
 // Canvas constants
 const TILE_WIDTH = 101;
 const TILE_HEIGHT = 82;
+const COL_COUNT = 5;
+const ROW_COUNT = 6;
+
+// Topmost valid value for Y
 const Y_OFFSET = -32;
+
+// Topmost valid value for X
 const X_OFFSET = 2;
 
 // Enemy constants allow us to expand game in future, if needed
@@ -16,7 +22,8 @@ const ENEMY_TOP_ROW_OFFSET = 50;
 const ENEMY_NUMBER_OF_ROWS = 3;
 
 // Player constants
-const PLAYER_STARTING_ROW_INDEX = 5;
+// Last row, middle column
+const PLAYER_STARTING_ROW_INDEX = ROW_COUNT - 1;
 const PLAYER_STARTING_COL_INDEX = 2;
 
 // Enemies our player must avoid
@@ -80,23 +87,29 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(keyPressed) {
-    //TODO: Ensure player can't move off screen
+    var x = this.x;
+    var y = this.y;
 
+    // Move in the direction of the keypress if keypress was in bounds for the player
     switch(keyPressed) {
         case 'left':
-            player.x -= TILE_WIDTH;
+            x -= TILE_WIDTH;
+            if (x >= X_OFFSET) { this.x = x; }
             break;
         case 'right':
-            player.x += TILE_WIDTH;
+            x += TILE_WIDTH;
+            if (x <= TILE_WIDTH * COL_COUNT) { this.x = x; }
             break;
         case 'up':
-            player.y -= TILE_HEIGHT;
+            y -= TILE_HEIGHT;
+            if (y >= Y_OFFSET) { this.y = y; }
             break;
         case 'down':
-            player.y += TILE_HEIGHT;
+            y += TILE_HEIGHT;
+            if (y <= TILE_HEIGHT * (ROW_COUNT - 1)) { this.y = y; }
             break;
     }
-    console.log('x: ', player.x, 'y: ', player.y);
+
 };
 
 // Now instantiate your objects.
