@@ -4,20 +4,24 @@
 ////Centered "x" locations for player: 13, 114, 215, 316, 417
 ////Centered "y" locations for player: 35, 118, 200, 282, 364, 446
 
+// Canvas constants
+const TILE_WIDTH = 101;
+const TILE_HEIGHT = 82;
+const Y_OFFSET = -32;
+const X_OFFSET = 2;
+
 // Enemy constants allow us to expand game in future, if needed
-const ENEMY_TOP_ROW_OFFSET = 132;
-const ENEMY_ROW_HEIGHT = 82;
+// TOP_ROW_OFFSET prevents enemy from rendering in the water
+const ENEMY_TOP_ROW_OFFSET = 50;
 const ENEMY_NUMBER_OF_ROWS = 3;
 
 // Player constants
-const PLAYER_STARTING_X_POSITION = 215;
-const PLAYER_STARTING_Y_POSITION = 446;
-const PLAYER_ROW_WIDTH = 101;
-const PLAYER_ROW_HEIGHT = 82;
+const PLAYER_STARTING_ROW_INDEX = 5;
+const PLAYER_STARTING_COL_INDEX = 2;
 
 // Enemies our player must avoid
 var Enemy = function() {
-    this.sprite = 'images/enemy-bug-cropped.png';
+    this.sprite = 'images/enemy-bug.png';
 
     //Starting locations
     //this.x = this.setXLocation();
@@ -50,7 +54,7 @@ Enemy.prototype.setXLocation = function() {
 // Set enemy starting Y position according to number of enemy rows defined in constants
 Enemy.prototype.setYLocation = function() {
     var rowIndex = Math.floor(Math.random() * ENEMY_NUMBER_OF_ROWS);
-    return ENEMY_TOP_ROW_OFFSET + (ENEMY_ROW_HEIGHT * rowIndex);
+    return ENEMY_TOP_ROW_OFFSET + (TILE_HEIGHT * rowIndex);
 };
 
 // Set enemy move speed
@@ -62,9 +66,9 @@ Enemy.prototype.setMoveSpeed = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-    this.sprite = 'images/char-princess-girl-cropped.png';
-    this.x = PLAYER_STARTING_X_POSITION;
-    this.y = PLAYER_STARTING_Y_POSITION;
+    this.sprite = 'images/char-princess-girl.png';
+    this.x = (TILE_WIDTH * PLAYER_STARTING_COL_INDEX) + X_OFFSET;
+    this.y = (TILE_HEIGHT * PLAYER_STARTING_ROW_INDEX) + Y_OFFSET;
 };
 
 Player.prototype.update = function() {
@@ -75,20 +79,21 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function(e) {
+Player.prototype.handleInput = function(keyPressed) {
     //TODO: Ensure player can't move off screen
-    switch(e) {
+
+    switch(keyPressed) {
         case 'left':
-            player.x -= PLAYER_ROW_WIDTH;
+            player.x -= TILE_WIDTH;
             break;
         case 'right':
-            player.x += PLAYER_ROW_WIDTH;
+            player.x += TILE_WIDTH;
             break;
         case 'up':
-            player.y -= PLAYER_ROW_HEIGHT;
+            player.y -= TILE_HEIGHT;
             break;
         case 'down':
-            player.y += PLAYER_ROW_HEIGHT;
+            player.y += TILE_HEIGHT;
             break;
     }
     console.log('x: ', player.x, 'y: ', player.y);
