@@ -5,9 +5,11 @@ var Enemy = function() {
 };
 
 Enemy.prototype.initialize = function() {
-    this.x = OFFSCREEN_X_LOCATION;
-    this.y = this.setYLocation();
-    this.moveSpeed = this.setMoveSpeed();
+    // this.x = OFFSCREEN_X_LOCATION;
+    // this.y = this.setYLocation();
+    // this.moveSpeed = this.setMoveSpeed();
+    this.x = 202;
+    this.y = 50;
 }
 
 // Update the enemy's position, required method for game
@@ -16,12 +18,7 @@ Enemy.prototype.update = function(dt) {
     // Multiply any movement by the dt parameter,
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.x = this.x + (this.moveSpeed * dt);
-
-    // Enemy is generated again when it goes off screen
-    if (this.x > TILE_WIDTH * COL_COUNT) {
-        this.initialize();
-    }
+    
 };
 
 // Draw the enemy on the screen, required method for game
@@ -105,21 +102,18 @@ Player.prototype.handleInput = function(keyPressed) {
 
 // Avoiding creation of global function variables
 var gameFunctions = {
-    generateEnemies: function() {
-        for (var i = NUMBER_OF_ENEMIES; i > 0; i--) {
-            allEnemies.push(new Enemy());
-        }
-    },
     checkCollision: function() {
         allEnemies.forEach(function(enemy) {
 
-            var enemyRight = enemy.x + SPRITE_WIDTH;
-            var enemyLeft = enemy.x;
-            var playerRight = player.x + SPRITE_WIDTH - PLAYER_SPRITE_WIDTH_OFFSET;
-            var playerLeft = player.x + PLAYER_SPRITE_WIDTH_OFFSET;
+            var enemyRightPosition = enemy.x + (TILE_WIDTH / 2);
+            var enemyLeftPosition = enemy.x - (TILE_WIDTH / 2)
+            var playerLeftPosition = player.x;
+            var playerRightPosition = player.x + TILE_WIDTH;
 
-
-            if (enemy.y === player.y && enemyRight >= playerLeft && enemyLeft <= playerRight) {
+            if (enemy.y === player.y &&
+                enemyRightPosition >= playerLeftPosition && 
+                enemyRightPosition <= playerRightPosition) 
+            {
                 // TODO: Check if lives === 0, if so reset game wins to 0
                 player.lives--;
                 player.setYLocation();
@@ -135,7 +129,8 @@ var gameFunctions = {
 // Place the player object in a variable called player
 var allEnemies = [];
 var player = new Player();
-gameFunctions.generateEnemies();
+var enemy = new Enemy();
+allEnemies.push(enemy);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
