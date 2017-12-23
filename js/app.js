@@ -10,7 +10,7 @@ Enemy.prototype.initialize = function() {
     this.moveSpeed = this.setMoveSpeed();
 }
 
-// Update the enemy's position, required method for game
+// Update the enemy's position
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     // Multiply any movement by the dt parameter,
@@ -45,12 +45,13 @@ var Player = function() {
     this.x = this.setXLocation();
     this.y = this.setYLocation();
 
-    //Starting number of wins + lives
     this.wins = 0;
     this.lives = 3;
 
 };
 
+// Below player location functions will calculate the correct starting location
+// for the player in the bottom middle of the screen.
 Player.prototype.setXLocation = function() {
     return this.x = (TILE_WIDTH * PLAYER_STARTING_COL_INDEX) + X_OFFSET;
 }
@@ -76,11 +77,11 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Move in the direction of the keypress if keypress was in bounds for the player
 Player.prototype.handleInput = function(keyPressed) {
     var x = this.x;
     var y = this.y;
 
-    // Move in the direction of the keypress if keypress was in bounds for the player
     switch(keyPressed) {
         case 'left':
             x -= TILE_WIDTH;
@@ -102,6 +103,7 @@ Player.prototype.handleInput = function(keyPressed) {
 
 };
 
+// Reset wins & lives
 Player.prototype.endGame = function() {
     this.wins = 0;
     this.lives = 3;
@@ -124,13 +126,14 @@ var gameFunctions = {
             var playerRight = player.x + SPRITE_WIDTH - PLAYER_SPRITE_WIDTH_OFFSET;
             var playerLeft = player.x + PLAYER_SPRITE_WIDTH_OFFSET;
 
-            // Logic indicates a collision has occurred
+            // Logic indicates a collision with player's body (not head) has occurred
             if (enemy.y === player.y && enemyRight >= playerLeft && enemyLeft <= playerRight) {
                 player.lives--;
 
                 // Reset game if player lives reaches 0
                 if (player.lives === 0) { player.endGame(); }
-                
+
+                // Place player back in starting position
                 player.setYLocation();
                 player.setXLocation();
             }
@@ -146,8 +149,8 @@ var allEnemies = [];
 var player = new Player();
 gameFunctions.generateEnemies();
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// This listens for key presses and sends the keys to
+// Player.handleInput() method.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',

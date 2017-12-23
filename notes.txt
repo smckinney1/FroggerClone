@@ -1,7 +1,0 @@
-NOTE TO SELF
-
-////Centered "x" locations for enemy: 0, 100, 200, 300, 400
-////Centered "y" locations for enemy: 132, 214, 296 (***other rows not valid starting positions for enemy***)
-////Centered "x" locations for player: 13, 114, 215, 316, 417
-////Centered "y" locations for player: 35, 118, 200, 282, 364, 446
-
