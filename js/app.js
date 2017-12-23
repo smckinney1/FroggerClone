@@ -69,6 +69,7 @@ Player.prototype.update = function() {
         this.x = this.setXLocation();
         this.y = this.setYLocation();
     } else {
+        // console.log('enemy y: ', allEnemies[0].y, ' player y: ', player.y);
         gameFunctions.checkCollision();
     }
 };
@@ -108,19 +109,27 @@ var gameFunctions = {
     generateEnemies: function() {
         for (var i = NUMBER_OF_ENEMIES; i > 0; i--) {
             allEnemies.push(new Enemy());
-            console.log(allEnemies);
         }
     },
     checkCollision: function() {
+        // Player X position will always be one of these values: 2, 103, 204, 305, 406
+        // Enemy Y position will always be 214, 132, or 50
+        // Enemy & player X and Y will match if player is on stone rows
+        // Enemy X position will vary
 
-        // TODO: This works, to an extent. Make it so this works when an enemy is on the same TILE as the player,
-        // not just when the enemy.x and player.x are equal.
+        // NOTE: TILE_WIDTH is 101 pixels. Need to make a calculation based on that.
+
         allEnemies.forEach(function(enemy) {
-            if (player.x === Math.floor(enemy.x)) {
+
+            var horizontalEnemyCenter = enemy.x + (TILE_WIDTH / 2);
+            var playerLeftPosition = player.x;
+            var playerRightPosition = player.x + TILE_WIDTH;
+
+            if (enemy.y === player.y && horizontalEnemyCenter >= playerLeftPosition && horizontalEnemyCenter <= playerRightPosition) {
+                // TODO: Check if lives === 0, if so reset game wins to 0
                 player.lives--;
                 player.setYLocation();
                 player.setXLocation();
-                console.log('collision!');
             }
         });
     }
