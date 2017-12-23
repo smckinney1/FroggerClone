@@ -47,10 +47,14 @@ var Player = function() {
     this.sprite = 'images/char-princess-girl.png';
     this.x = (TILE_WIDTH * PLAYER_STARTING_COL_INDEX) + X_OFFSET;
     this.y = (TILE_HEIGHT * PLAYER_STARTING_ROW_INDEX) + Y_OFFSET;
+
+    //Starting number of wins + lives
+    this.wins = 0;
+    this.lives = 3;
 };
 
 Player.prototype.update = function() {
-    // TODO: Win conditions
+    // TODO: This is called in engine.js. It always runs. Figure out what this is for.
 };
 
 Player.prototype.render = function() {
@@ -74,6 +78,7 @@ Player.prototype.handleInput = function(keyPressed) {
         case 'up':
             y -= TILE_HEIGHT;
             if (y >= Y_OFFSET) { this.y = y; }
+            this.checkWinCondition();
             break;
         case 'down':
             y += TILE_HEIGHT;
@@ -81,6 +86,15 @@ Player.prototype.handleInput = function(keyPressed) {
             break;
     }
 
+};
+
+Player.prototype.checkWinCondition = function() {
+    if (this.y === Y_OFFSET) {
+        this.wins += 1;
+        // TODO: Display wins in UI
+        this.x = (TILE_WIDTH * PLAYER_STARTING_COL_INDEX) + X_OFFSET;
+        this.y = (TILE_HEIGHT * PLAYER_STARTING_ROW_INDEX) + Y_OFFSET;
+    }
 };
 
 // Now instantiate your objects.
