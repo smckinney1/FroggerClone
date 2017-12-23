@@ -35,14 +35,11 @@ Enemy.prototype.setYLocation = function() {
     return ENEMY_TOP_ROW_OFFSET + (TILE_HEIGHT * rowIndex);
 };
 
-// Set enemy move speed
-// Speed will be either 100 (slow), 200 (medium), or 300 (fast)
+// Set enemy move speed at 100 (slow), 200 (medium), or 300 (fast)
 Enemy.prototype.setMoveSpeed = function() {
     return (Math.floor(Math.random() * 3) + 1) * 100;
 };
 
-// This class requires an update(), render() and
-// a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-princess-girl.png';
     this.x = this.setXLocation();
@@ -63,6 +60,8 @@ Player.prototype.setYLocation = function() {
 }
 
 // If player has reached the water, add to win count and reset location.
+// Otherwise, check if the player and enemy have collided.
+// This function constantly runs as a result of the game engine.
 Player.prototype.update = function() {
     if (this.y === Y_OFFSET) {
         this.wins += 1;
@@ -103,6 +102,11 @@ Player.prototype.handleInput = function(keyPressed) {
 
 };
 
+Player.prototype.endGame = function() {
+    this.wins = 0;
+    this.lives = 3;
+}
+
 // Avoiding creation of global function variables
 var gameFunctions = {
     generateEnemies: function() {
@@ -113,15 +117,20 @@ var gameFunctions = {
     checkCollision: function() {
         allEnemies.forEach(function(enemy) {
 
+            // These calculations are necessary to ensure the bug is either on or overlapping
+            // with player's body (not head) 
             var enemyRight = enemy.x + SPRITE_WIDTH;
             var enemyLeft = enemy.x;
             var playerRight = player.x + SPRITE_WIDTH - PLAYER_SPRITE_WIDTH_OFFSET;
             var playerLeft = player.x + PLAYER_SPRITE_WIDTH_OFFSET;
 
-
+            // Logic indicates a collision has occurred
             if (enemy.y === player.y && enemyRight >= playerLeft && enemyLeft <= playerRight) {
-                // TODO: Check if lives === 0, if so reset game wins to 0
                 player.lives--;
+
+                // Reset game if player lives reaches 0
+                if (player.lives === 0) { player.endGame(); }
+                
                 player.setYLocation();
                 player.setXLocation();
             }

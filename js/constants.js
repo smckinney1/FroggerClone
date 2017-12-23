@@ -25,4 +25,4 @@ const PLAYER_STARTING_COL_INDEX = 2;
 
 // To be used in gameFunctions.checkCollision(), as the player's width
 // is much smaller than enemy width, despite tiles being same width.
-const PLAYER_SPRITE_WIDTH_OFFSET = 23;
+const PLAYER_SPRITE_WIDTH_OFFSET = 33;
