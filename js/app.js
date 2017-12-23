@@ -45,20 +45,31 @@ Enemy.prototype.setMoveSpeed = function() {
 // a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-princess-girl.png';
-    this.x = (TILE_WIDTH * PLAYER_STARTING_COL_INDEX) + X_OFFSET;
-    this.y = (TILE_HEIGHT * PLAYER_STARTING_ROW_INDEX) + Y_OFFSET;
+    this.x = this.setXLocation();
+    this.y = this.setYLocation();
 
     //Starting number of wins + lives
     this.wins = 0;
     this.lives = 3;
+
 };
+
+Player.prototype.setXLocation = function() {
+    return this.x = (TILE_WIDTH * PLAYER_STARTING_COL_INDEX) + X_OFFSET;
+}
+
+Player.prototype.setYLocation = function() {
+    return this.y = (TILE_HEIGHT * PLAYER_STARTING_ROW_INDEX) + Y_OFFSET;
+}
 
 // If player has reached the water, add to win count and reset location.
 Player.prototype.update = function() {
     if (this.y === Y_OFFSET) {
         this.wins += 1;
-        this.x = (TILE_WIDTH * PLAYER_STARTING_COL_INDEX) + X_OFFSET;
-        this.y = (TILE_HEIGHT * PLAYER_STARTING_ROW_INDEX) + Y_OFFSET;
+        this.x = this.setXLocation();
+        this.y = this.setYLocation();
+    } else {
+        gameFunctions.checkCollision();
     }
 };
 
@@ -92,12 +103,36 @@ Player.prototype.handleInput = function(keyPressed) {
 
 };
 
-// Now instantiate your objects.
+// Avoiding creation of global function variables
+var gameFunctions = {
+    generateEnemies: function() {
+        for (var i = NUMBER_OF_ENEMIES; i > 0; i--) {
+            allEnemies.push(new Enemy());
+            console.log(allEnemies);
+        }
+    },
+    checkCollision: function() {
+
+        // TODO: This works, to an extent. Make it so this works when an enemy is on the same TILE as the player,
+        // not just when the enemy.x and player.x are equal.
+        allEnemies.forEach(function(enemy) {
+            if (player.x === Math.floor(enemy.x)) {
+                player.lives--;
+                player.setYLocation();
+                player.setXLocation();
+                console.log('collision!');
+            }
+        });
+    }
+
+};
+
+// Instantiating game objects
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
 var player = new Player();
-allEnemies.push(new Enemy());
+gameFunctions.generateEnemies();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

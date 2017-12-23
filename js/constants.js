@@ -15,6 +15,7 @@ const X_OFFSET = 2;
 // TOP_ROW_OFFSET prevents enemy from rendering in the water
 const ENEMY_TOP_ROW_OFFSET = 50;
 const ENEMY_NUMBER_OF_ROWS = 3;
+const NUMBER_OF_ENEMIES = 5;
 
 // Player constants for starting location (last row, middle column)
 const PLAYER_STARTING_ROW_INDEX = ROW_COUNT - 1;
