@@ -53,8 +53,13 @@ var Player = function() {
     this.lives = 3;
 };
 
+// If player has reached the water, add to win count and reset location.
 Player.prototype.update = function() {
-    // TODO: This is called in engine.js. It always runs. Figure out what this is for.
+    if (this.y === Y_OFFSET) {
+        this.wins += 1;
+        this.x = (TILE_WIDTH * PLAYER_STARTING_COL_INDEX) + X_OFFSET;
+        this.y = (TILE_HEIGHT * PLAYER_STARTING_ROW_INDEX) + Y_OFFSET;
+    }
 };
 
 Player.prototype.render = function() {
@@ -78,7 +83,6 @@ Player.prototype.handleInput = function(keyPressed) {
         case 'up':
             y -= TILE_HEIGHT;
             if (y >= Y_OFFSET) { this.y = y; }
-            this.checkWinCondition();
             break;
         case 'down':
             y += TILE_HEIGHT;
@@ -86,15 +90,6 @@ Player.prototype.handleInput = function(keyPressed) {
             break;
     }
 
-};
-
-Player.prototype.checkWinCondition = function() {
-    if (this.y === Y_OFFSET) {
-        this.wins += 1;
-        // TODO: Display wins in UI
-        this.x = (TILE_WIDTH * PLAYER_STARTING_COL_INDEX) + X_OFFSET;
-        this.y = (TILE_HEIGHT * PLAYER_STARTING_ROW_INDEX) + Y_OFFSET;
-    }
 };
 
 // Now instantiate your objects.

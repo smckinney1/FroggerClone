@@ -138,9 +138,10 @@ var Engine = (function(global) {
             }
         }
 
-        ctx.font = '48px "Indie Flower"';
-        ctx.fillText('Wins: ' + player.wins, 20, 575);
-        ctx.fillText('Lives: ' + player.lives, 345, 575);
+        ctx.font = '48px "Indie Flower", cursive';
+        ctx.fillStyle = '#DADBCF';
+        ctx.fillText('Wins: ' + player.wins, 20, 577);
+        ctx.fillText('Lives: ' + player.lives, 345, 577);
 
         renderEntities();
     }
